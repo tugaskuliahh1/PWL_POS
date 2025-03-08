@@ -11,12 +11,12 @@ class UserController extends Controller
     public function index() // Tambahkan method index
     {
         $data = [
-            'username' => 'customer-1',
-            'nama' => 'Pelanggan',
-            'password' => hash::make('12345'),
-            'level_id' => 4
+            'level_id' => 2,
+            'username' => 'manager_tiga',
+            'nama' => 'Manager 3',
+            'password' => hash::make('12345')
         ];
-        UserModel::insert($data);
+        UserModel::create($data);
         
         $user = UserModel::all(); // Ambil semua data dari tabel m_user
         return view('user', ['data' => $user]); // Kirim data ke view user.blade.php
