@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserModel extends Model
+class LevelModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'm_user';
-    protected $primaryKey = 'user_id';
+    protected $table = 'm_level';
+    protected $primaryKey = 'level_id';
     /*
     *The attributes that are mass assignable.
     *
@@ -21,6 +21,6 @@ class UserModel extends Model
 
     public function level(): BelongsTo
     {
-        return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
+        return $this->belongsTo(UserModel::class, 'level_id', 'level_id');
     }
 }
