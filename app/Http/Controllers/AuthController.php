@@ -17,25 +17,17 @@ class AuthController extends Controller
 
     public function postlogin(Request $request)
     {
-        if($request->ajax() || $request->wantsJson()){
-            $credentials = $request->only('username', 'password');
-
-            if (Auth::attempt($credentials)) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Login Berhasil',
-                    'redirect' => url('/')
-                ]);
-            }
-            
-            return response()->json([
-                'status' => false,
-                'message' => 'Login Gagal'
-            ]);
+        $credentials = $request->only('username', 'password');
+    
+        if (Auth::attempt($credentials)) {
+            return redirect()->intended('/');
         }
-
-        return redirect('login');
+    
+        return back()->withErrors([
+            'username' => 'Username atau password salah.',
+        ]);
     }
+    
 
     public function logout(Request $request)
     {

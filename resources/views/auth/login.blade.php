@@ -3,7 +3,7 @@
 @section('auth_header', __('Login ke Akun Anda')) {{-- Judul di atas form, jika package mendukung --}}
 
 @section('auth_body') {{-- Atau 'content' jika layout master Anda menggunakan section 'content' --}}
-    <form action="{{ route('login') }}" method="post">
+    <form action="{{ url('login') }}" method="post">
         @csrf
 
         {{-- Username field --}}

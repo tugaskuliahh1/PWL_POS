@@ -12,14 +12,24 @@ use App\Http\Controllers\AuthController;
 
 Route::pattern('id','[0-9]+');
 
-Route::get('login', [AuthController::class,'login'])->name('login');
-Route::post('login', [AuthController::class,'postlogin']);
+Route::get('login', [AuthController::class,'login']);
+Route::post('login', [AuthController::class,'postlogin'])->name('login');
 Route::get('logout', [AuthController::class,'logout'])->middleware('auth');
 
 Route::middleware(['auth'])->group(function() { // artinya semua route didalam group ini harus login dulu
+    Route::get('/',[WelcomeController::class,'index']);
+    // route Level
 
-    // masukkan semua route yang perlu autentikasi disini
-
+    // artinya semua route di dalam group ini harus punya role ADM (Administrator)
+    Route::middleware(['authorize:ADM'])->group(function(){
+        Route::get('/level',[LevelController::class,'index']);
+        Route::post('/level/list',[LevelController::class,'list']);
+        Route::get('/level/create',[LevelController::class,'create']);
+        Route::post('/level',[LevelController::class,'store']);
+        Route::get('/level/{id}/edit',[LevelController::class,'edit']);
+        Route::put('/level/{id}',[LevelController::class,'update']);
+        Route::delete('/level/{id}',[LevelController::class,'destroy']);
+    });
 });
 
 
