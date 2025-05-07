@@ -6,6 +6,7 @@
     <form action="{{ url('login') }}" method="post">
         @csrf
 
+        
         {{-- Username field --}}
         <div class="input-group mb-3">
             <input type="username" name="username" class="form-control @error('username') is-invalid @enderror"

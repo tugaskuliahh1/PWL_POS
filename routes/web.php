@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StokController;
+use App\Http\Controllers\PenjualanController;
+
 
 Route::pattern('id','[0-9]+');
 
@@ -16,7 +19,7 @@ Route::get('login', [AuthController::class,'login']);
 Route::post('login', [AuthController::class,'postlogin'])->name('login');
 Route::get('logout', [AuthController::class,'logout'])->middleware('auth');
 
-Route::middleware(['auth'])->group(function() { // artinya semua route didalam group ini harus login dulu
+Route::middleware(['auth'])->group(function() { 
     Route::get('/',[WelcomeController::class,'index']);
     // route Level
 
@@ -29,6 +32,53 @@ Route::middleware(['auth'])->group(function() { // artinya semua route didalam g
         Route::get('/level/{id}/edit',[LevelController::class,'edit']);
         Route::put('/level/{id}',[LevelController::class,'update']);
         Route::delete('/level/{id}',[LevelController::class,'destroy']);
+
+        // User Management
+        Route::get('/user', [UserController::class, 'index']);
+        Route::post('/user/list', [UserController::class, 'list']);
+        Route::get('/user/create', [UserController::class, 'create']);
+        Route::post('/user', [UserController::class, 'store']);
+        Route::get('/user/{id}/edit', [UserController::class, 'edit']);
+        Route::put('/user/{id}', [UserController::class, 'update']);
+        Route::delete('/user/{id}', [UserController::class, 'destroy']);
+    });
+
+    // Route yang bisa diakses oleh Administrator dan Manager
+    Route::middleware(['auth', 'authorize:ADM,MNG'])->group(function () {
+        // Barang Management
+        Route::get('/barang', [BarangController::class, 'index']);
+        Route::post('/barang/list', [BarangController::class, 'list']);
+        Route::get('/barang/create_ajax', [BarangController::class, 'create_ajax']);
+        Route::post('/barang_ajax', [BarangController::class, 'store_ajax']);
+        Route::get('/barang/{id}/edit_ajax', [BarangController::class, 'edit_ajax']);
+        Route::put('/barang/{id}/update_ajax', [BarangController::class, 'update_ajax']);
+        Route::get('/barang/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);
+        Route::delete('/barang/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
+
+        // Kategori Management
+        Route::get('/kategori', [KategoriController::class, 'index']);
+        Route::post('/kategori/list', [KategoriController::class, 'list']);
+        Route::get('/kategori/create', [KategoriController::class, 'create']);
+        Route::post('/kategori', [KategoriController::class, 'store']);
+        Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit']);
+        Route::put('/kategori/{id}', [KategoriController::class, 'update']);
+        Route::delete('/kategori/{id}', [KategoriController::class, 'destroy']);
+    });
+
+    // Route yang bisa diakses oleh Administrator, Manager, dan Staff
+    Route::middleware(['auth', 'authorize:ADM,MNG,STF'])->group(function () {
+        // Stok Management
+        Route::get('/stok', [StokController::class, 'index']);
+        Route::post('/stok/list', [StokController::class, 'list']);
+        Route::get('/stok/create', [StokController::class, 'create']);
+        Route::post('/stok', [StokController::class, 'store']);
+
+        // Penjualan Management
+        Route::get('/penjualan', [PenjualanController::class, 'index']);
+        Route::post('/penjualan/list', [PenjualanController::class, 'list']);
+        Route::get('/penjualan/create', [PenjualanController::class, 'create']);
+        Route::post('/penjualan', [PenjualanController::class, 'store']);
+        Route::get('/penjualan/{id}', [PenjualanController::class, 'show']);
     });
 });
 
