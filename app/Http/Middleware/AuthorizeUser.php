@@ -28,4 +28,5 @@ class AuthorizeUser
         }
         abort(403, 'Forbidden. Kamu tidak punya akses ke halaman ini');
     }
+    
 }

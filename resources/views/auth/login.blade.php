@@ -6,7 +6,7 @@
     <form action="{{ url('login') }}" method="post">
         @csrf
 
-        
+
         {{-- Username field --}}
         <div class="input-group mb-3">
             <input type="username" name="username" class="form-control @error('username') is-invalid @enderror"
@@ -39,23 +39,28 @@
             @enderror
         </div>
 
-        {{-- Remember me & Login button --}}
-        <div class="row">
-            <div class="col-8">
-                <div class="icheck-primary"> {{-- Pastikan iCheck atau Bootstrap checkbox styling aktif --}}
-                    <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                    <label for="remember">
-                        {{ __('Ingat Saya') }}
-                    </label>
+        {{-- Remember Me & Button --}}
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                            <label for="remember">
+                                Ingat Saya
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </div>
                 </div>
-            </div>
-            <div class="col-4">
-                <button type="submit" class="btn btn-primary btn-block">
-                    {{ __('Login') }}
-                </button>
-            </div>
+            </form>
+
+            <p class="mb-0 mt-3 text-center">
+                <a href="{{ url('register') }}">Belum punya akun? Register</a>
+            </p>
         </div>
-    </form>
+    </div>
+</div>
 @stop
 
 @section('auth_footer') {{-- Atau bagian footer jika package mendukung --}}

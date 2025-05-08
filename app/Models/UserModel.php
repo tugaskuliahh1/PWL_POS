@@ -49,4 +49,5 @@ class UserModel extends Authenticatable
     {
         return $this->level->level_kode;
     }
+    
 }

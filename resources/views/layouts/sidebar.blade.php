@@ -79,7 +79,6 @@
             <p>Transaksi Penjualan</p>
             </a>
         </li>
-    
         <!-- Menu logout -->
         <li class="nav-header">User</li>
         <li class="nav-item">
