@@ -28,10 +28,10 @@ class BarangController extends Controller
             'barang_kode',
             'barang_nama',
             'kategori_id',
-            'satuan',
             'harga_beli',
             'harga_jual',
-            'stok'
+            'created_at',
+            'updated_at'
         );
     
         return DataTables::of($barang)

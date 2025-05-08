@@ -72,10 +72,11 @@ Route::middleware(['auth'])->group(function() {
     // Route yang bisa diakses oleh Administrator, Manager, dan Staff
     Route::middleware(['auth', 'authorize:ADM,MNG,STF'])->group(function () {
         // Stok Management
-        Route::get('/stok', [StokController::class, 'index']);
+        Route::get('/stok', [StokController::class, 'index'])->middleware(['auth', 'authorize:ADM,MNG,STF']);
         Route::post('/stok/list', [StokController::class, 'list']);
         Route::get('/stok/create', [StokController::class, 'create']);
         Route::post('/stok', [StokController::class, 'store']);
+        Route::resource('stok', StokController::class);
 
         // Penjualan Management
         Route::get('/penjualan', [PenjualanController::class, 'index']);

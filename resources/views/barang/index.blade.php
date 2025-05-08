@@ -60,12 +60,12 @@ $(document).ready(function () {
             { data: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
             { data: 'barang_kode' },
             { data: 'barang_nama' },
-            { data: 'kategori.kategori_nama', defaultContent: '-', orderable: false },
-            { data: 'satuan' },
+            { data: 'kategori.kategori_id', defaultContent: '-', orderable: false },
             { data: 'harga_beli' },
             { data: 'harga_jual' },
-            { data: 'stok', className: 'text-center' },
             { data: 'aksi', className: 'text-center', orderable: false, searchable: false },
+            { data: 'created_at' },
+            { data: 'updated_at' },
         ]
     });
 });
