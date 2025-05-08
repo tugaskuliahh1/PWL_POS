@@ -19,6 +19,10 @@ Route::get('login', [AuthController::class,'login']);
 Route::post('login', [AuthController::class,'postlogin'])->name('login');
 Route::get('logout', [AuthController::class,'logout'])->middleware('auth');
 
+// Route untuk register
+Route::get('register', [AuthController::class, 'register'])->name('resgister');
+Route::post('register', [AuthController::class, 'postregister']);
+
 Route::middleware(['auth'])->group(function() { 
     Route::get('/',[WelcomeController::class,'index']);
     // route Level
