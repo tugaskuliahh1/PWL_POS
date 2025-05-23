@@ -6,6 +6,7 @@ use App\Models\LevelModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class LevelController extends Controller
 {
@@ -206,7 +207,7 @@ class LevelController extends Controller
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'level_kode' => 'required|string|min:2|max:10|unique:m_level,level_kode',
+                'level_kode' => 'required|string|min:2|max:10|unique:m_level,level_kode,' . $id . ',level_id',
                 'level_nama' => 'required|string|min:3|max:100',
             ];
 
@@ -261,6 +262,60 @@ class LevelController extends Controller
                 ]);
             }
         }
+        return redirect('/');
+    }
+
+    // ================== IMPORT EXCEL ===================
+
+    public function import()
+    {
+        return view('level.import');
+    }
+
+    public function import_ajax(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'file_level' => ['required', 'mimes:xlsx', 'max:1024']
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            $file = $request->file('file_level');
+            $reader = IOFactory::createReader('Xlsx');
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getRealPath());
+            $sheet = $spreadsheet->getActiveSheet();
+            $data = $sheet->toArray(null, false, true, true);
+
+            $insert = [];
+            foreach ($data as $baris => $value) {
+                if ($baris > 1) {
+                    $insert[] = [
+                        'level_kode' => $value['A'],
+                        'level_nama' => $value['B'],
+                        'created_at' => now()
+                    ];
+                }
+            }
+
+            if (count($insert) > 0) {
+                LevelModel::insertOrIgnore($insert);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data level berhasil diimport'
+            ]);
+        }
+
         return redirect('/');
     }
 }

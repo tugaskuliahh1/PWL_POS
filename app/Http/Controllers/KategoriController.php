@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KategoriModel; // Pastikan Anda memiliki model KategoriModel
+use App\Models\KategoriModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class KategoriController extends Controller
 {
-    // Menampilkan halaman awal kategori
     public function index()
     {
         $breadcrumb = (object)[
@@ -26,7 +26,6 @@ class KategoriController extends Controller
         return view('kategori.index', compact('breadcrumb', 'page', 'activeMenu'));
     }
 
-    // Ambil data kategori dalam bentuk json untuk datatables 
     public function list(Request $request)
     {
         $data = KategoriModel::select('kategori_id', 'kategori_kode', 'kategori_nama');
@@ -44,29 +43,22 @@ class KategoriController extends Controller
             ->make(true);
     }
 
-    // Menampilkan halaman form tambah kategori
     public function create()
     {
-        $breadcrumb = (object) [
+        $breadcrumb = (object)[
             'title' => 'Tambah Kategori',
             'list' => ['Home', 'Kategori', 'Tambah']
         ];
 
-        $page = (object) [
+        $page = (object)[
             'title' => 'Tambah kategori baru'
         ];
 
         $activeMenu = 'kategori';
 
-        return view('kategori.create', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'activeMenu' => $activeMenu
-        ]);
+        return view('kategori.create', compact('breadcrumb', 'page', 'activeMenu'));
     }
 
-    // Menyimpan data kategori baru
-    // Menyimpan data kategori baru
     public function store(Request $request)
     {
         $request->validate([
@@ -84,55 +76,42 @@ class KategoriController extends Controller
         return redirect('/kategori')->with('success', 'Data kategori berhasil disimpan');
     }
 
-    // Menampilkan detail kategori
     public function show(string $id)
     {
         $kategori = KategoriModel::find($id);
 
-        $breadcrumb = (object) [
+        $breadcrumb = (object)[
             'title' => 'Detail Kategori',
             'list' => ['Home', 'Kategori', 'Detail']
         ];
 
-        $page = (object) [
+        $page = (object)[
             'title' => 'Detail kategori'
         ];
 
         $activeMenu = 'kategori';
 
-        return view('kategori.show', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'kategori' => $kategori,
-            'activeMenu' => $activeMenu
-        ]);
+        return view('kategori.show', compact('breadcrumb', 'page', 'kategori', 'activeMenu'));
     }
 
-    // Menampilkan halaman form edit kategori
     public function edit(string $id)
     {
         $kategori = KategoriModel::find($id);
 
-        $breadcrumb = (object) [
+        $breadcrumb = (object)[
             'title' => 'Edit Kategori',
             'list' => ['Home', 'Kategori', 'Edit']
         ];
 
-        $page = (object) [
+        $page = (object)[
             'title' => 'Edit kategori'
         ];
 
         $activeMenu = 'kategori';
 
-        return view('kategori.edit', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'kategori' => $kategori,
-            'activeMenu' => $activeMenu
-        ]);
+        return view('kategori.edit', compact('breadcrumb', 'page', 'kategori', 'activeMenu'));
     }
 
-    // Menyimpan perubahan data kategori
     public function update(Request $request, string $id)
     {
         $request->validate([
@@ -146,14 +125,13 @@ class KategoriController extends Controller
         return redirect('/kategori')->with('success', 'Data kategori berhasil diubah');
     }
 
-    // Menghapus data kategori
     public function destroy(string $id)
     {
         $check = KategoriModel::find($id);
         if (!$check) {
             return redirect('/kategori')->with('error', 'Data kategori tidak ditemukan');
         }
-    
+
         try {
             KategoriModel::destroy($id);
             return redirect('/kategori')->with('success', 'Data kategori berhasil dihapus');
@@ -161,14 +139,14 @@ class KategoriController extends Controller
             return redirect('/kategori')->with('error', 'Data kategori gagal dihapus karena masih terkait dengan data lain');
         }
     }
-    
+
     // ================== AJAX ===================
     
     public function create_ajax()
     {
         return view('kategori.create_ajax');
     }
-    
+
     public function store_ajax(Request $request)
     {
         if ($request->ajax()) {
@@ -209,7 +187,7 @@ class KategoriController extends Controller
         $kategori = KategoriModel::find($id);
         return view('kategori.edit_ajax', compact('kategori'));
     }
-    
+
     public function update_ajax(Request $request, $id)
     {
         if ($request->ajax()) {
@@ -239,13 +217,13 @@ class KategoriController extends Controller
 
         return redirect('/');
     }
-    
+
     public function confirm_ajax($id)
     {
         $kategori = KategoriModel::find($id);
         return view('kategori.confirm_ajax', compact('kategori'));
     }
-    
+
     public function delete_ajax(Request $request, $id)
     {
         if ($request->ajax()) {
@@ -259,5 +237,70 @@ class KategoriController extends Controller
         }
 
         return redirect('/');
+    }
+
+    // ================== IMPORT EXCEL ===================
+
+    public function import()
+    {
+        return view('kategori.import');
+    }
+
+    public function import_ajax(Request $request)
+    {
+        if ($request->ajax()) {
+            $rules = [
+                'file_kategori' => ['required', 'mimes:xlsx', 'max:1024'],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            $file = $request->file('file_kategori');
+            $reader = IOFactory::createReader('Xlsx');
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getRealPath());
+            $sheet = $spreadsheet->getActiveSheet();
+            $data = $sheet->toArray(null, true, true, true);
+
+            $insert = [];
+            $lastId = KategoriModel::count();
+
+            foreach ($data as $index => $row) {
+                if ($index == 1) continue;
+
+                $lastId++;
+                $kodeKategori = 'KTG' . str_pad($lastId, 3, '0', STR_PAD_LEFT);
+
+                $insert[] = [
+                    'kategori_kode' => $kodeKategori,
+                    'kategori_nama' => $row['A'],
+                    'created_at' => now()
+                ];
+            }
+
+            if (!empty($insert)) {
+                KategoriModel::insertOrIgnore($insert);
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
+            }
+        }
+
+        return redirect('/kategori');
     }
 }

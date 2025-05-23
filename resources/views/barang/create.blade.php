@@ -34,9 +34,6 @@
             <div class="form-group"><label>Harga Jual</label>
                 <input type="number" name="harga_jual" class="form-control" required>
             </div>
-            <div class="form-group"><label>Stok</label>
-                <input type="number" name="stok" class="form-control" required>
-            </div>
             <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
             <a href="{{ url('barang') }}" class="btn btn-sm btn-default">Kembali</a>
         </form>

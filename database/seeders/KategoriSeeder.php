@@ -15,7 +15,8 @@ class KategoriSeeder extends Seeder
             ['kategori_kode' => 'PAK', 'kategori_nama' => 'Pakaian'],
             ['kategori_kode' => 'MKN', 'kategori_nama' => 'Makanan'],
             ['kategori_kode' => 'MNM', 'kategori_nama' => 'Minuman'],
-            ['kategori_kode' => 'PRT', 'kategori_nama' => 'Peralatan Rumah Tangga']
+            ['kategori_kode' => 'PRT', 'kategori_nama' => 'Peralatan Rumah Tangga'],
+            ['kategori_kode' => 'KES', 'kategori_nama' => 'Kesehatan & Perawatan Diri']
         ]);        
     }
 }

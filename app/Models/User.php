@@ -10,6 +10,11 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    public function level()
+    {
+        return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
+    }
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**

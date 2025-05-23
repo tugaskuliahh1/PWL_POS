@@ -36,10 +36,13 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/level/{id}/edit',[LevelController::class,'edit']);
         Route::put('/level/{id}',[LevelController::class,'update']);
         Route::delete('/level/{id}',[LevelController::class,'destroy']);
+        Route::get('/level/import', [LevelController::class, 'import']);
+        Route::post('/level/import_ajax', [LevelController::class, 'import_ajax']);
 
         // User Management
         Route::get('/user', [UserController::class, 'index']);
         Route::post('/user/list', [UserController::class, 'list']);
+        Route::get('user/list', [UserController::class, 'list'])->name('user.list');
         Route::get('/user/create', [UserController::class, 'create']);
         Route::post('/user', [UserController::class, 'store']);
         Route::get('/user/{id}/edit', [UserController::class, 'edit']);
@@ -58,6 +61,8 @@ Route::middleware(['auth'])->group(function() {
         Route::put('/barang/{id}/update_ajax', [BarangController::class, 'update_ajax']);
         Route::get('/barang/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);
         Route::delete('/barang/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
+        Route::get('/barang/import',[BarangController::class, 'import']);
+        Route::post('/barang/import_ajax',[BarangController::class, 'import_ajax']);
 
         // Kategori Management
         Route::get('/kategori', [KategoriController::class, 'index']);
@@ -67,6 +72,8 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit']);
         Route::put('/kategori/{id}', [KategoriController::class, 'update']);
         Route::delete('/kategori/{id}', [KategoriController::class, 'destroy']);
+        Route::get('/kategori/import', [KategoriController::class, 'import']);
+        Route::post('/kategori/import_ajax', [KategoriController::class, 'import_ajax']);
     });
 
     // Route yang bisa diakses oleh Administrator, Manager, dan Staff

@@ -28,11 +28,6 @@
                     <small id="error-kategori_id" class="text-danger"></small>
                 </div>
                 <div class="form-group">
-                    <label>Satuan</label>
-                    <input type="text" name="satuan" class="form-control" required>
-                    <small id="error-satuan" class="text-danger"></small>
-                </div>
-                <div class="form-group">
                     <label>Harga Beli</label>
                     <input type="number" name="harga_beli" class="form-control" required>
                     <small id="error-harga_beli" class="text-danger"></small>
@@ -41,11 +36,6 @@
                     <label>Harga Jual</label>
                     <input type="number" name="harga_jual" class="form-control" required>
                     <small id="error-harga_jual" class="text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Stok</label>
-                    <input type="number" name="stok" class="form-control" required>
-                    <small id="error-stok" class="text-danger"></small>
                 </div>
             </div>
             <div class="modal-footer">
@@ -63,10 +53,8 @@
                 barang_kode: { required: true, minlength: 2, maxlength: 10 },
                 barang_nama: { required: true, minlength: 3 },
                 kategori_id: { required: true },
-                satuan: { required: true },
                 harga_beli: { required: true, number: true },
                 harga_jual: { required: true, number: true },
-                stok: { required: true, digits: true },
             },
             submitHandler: function (form) {
                 $.ajax({
