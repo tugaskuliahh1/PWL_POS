@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/level/import', [LevelController::class, 'import']);
         Route::post('/level/import_ajax', [LevelController::class, 'import_ajax']);
         Route::get('/level/export_excel',[LevelController::class, 'export_excel_level']); //export excel
+        Route::get('/level/export_pdf',[LevelController::class, 'export_pdf']); //export pdf
 
         // User Management
         Route::get('/user', [UserController::class, 'index']);
@@ -78,6 +79,7 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/kategori/import', [KategoriController::class, 'import']);
         Route::post('/kategori/import_ajax', [KategoriController::class, 'import_ajax']);
         Route::get('/kategori/export_excel',[KategoriController::class, 'export_excel']); //export excel
+        Route::get('/kategori/export_pdf',[KategoriController::class, 'export_pdf']); //export pdf
     }); 
 
     // Route yang bisa diakses oleh Administrator, Manager, dan Staff
