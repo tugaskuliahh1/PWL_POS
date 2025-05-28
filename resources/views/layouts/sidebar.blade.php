@@ -28,7 +28,14 @@
         <!-- Menu Level hanya untuk Administrator -->
         @if($userRole == 'ADM')
             <li class="nav-header">Data Pengguna</li>
-    
+
+            <!-- Tambahkan menu profil -->
+            {{-- <li class="nav-item">
+                <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile') ? 'active' : ''}}">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>profile Saya</p>
+                </a>
+            </li> --}}
             <li class="nav-item">
             <a href="{{ url('/level') }}" class="nav-link {{ Request::is('level*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-layer-group"></i>

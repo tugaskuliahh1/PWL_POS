@@ -11,6 +11,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\ProfileController;
 
 
 Route::pattern('id','[0-9]+');
@@ -25,7 +26,12 @@ Route::post('register', [AuthController::class, 'postregister']);
 
 Route::middleware(['auth'])->group(function() { 
     Route::get('/',[WelcomeController::class,'index']);
-    // route Level
+    // Tambahkan route berikut di file routes/web.php
+
+    Route::get('profile/index', [ProfileController::class, 'index'])->name('profile.index');
+
+    // Route untuk menyimpan perubahan profile (POST)
+    Route::post('profile/update', [ProfileController::class, 'updatePhoto'])->name('profile.updatePhoto');
 
     // artinya semua route di dalam group ini harus punya role ADM (Administrator)
     Route::middleware(['authorize:ADM'])->group(function(){
@@ -50,6 +56,10 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/user/{id}/edit', [UserController::class, 'edit']);
         Route::put('/user/{id}', [UserController::class, 'update']);
         Route::delete('/user/{id}', [UserController::class, 'destroy']);
+        Route::get('/import', [UserController::class, 'import']); // ajax form upload excel
+        Route::post('/import_ajax', [UserController::class, 'import_ajax']); // ajax import excel
+        Route::get('/export_excel', [UserController::class, 'export_excel']); // export excel
+        Route::get('/export_pdf', [UserController::class, 'export_pdf']); // export pdf
     });
 
     // Route yang bisa diakses oleh Administrator dan Manager
