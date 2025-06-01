@@ -9,6 +9,7 @@ class BarangModel extends Model
 {
     protected $table = 'm_barang';
     public $timestamps = true;
+     protected $primaryKey = 'barang_id';
 
     protected $fillable = [
         'kategori_id',

@@ -6,6 +6,30 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\LevelController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\KategoriController;
+use App\Http\Controllers\Api\BarangController;
+
+//Routes for UserController
+Route::get('users', [UserController::class, 'index']);
+Route::post('users', [UserController::class, 'store']);
+Route::get('users/{user}', [UserController::class, 'show']);
+Route::put('users/{user}', [UserController::class, 'update']);
+Route::delete('users/{user}', [UserController::class, 'destroy']);
+
+// Routes for KategoriController
+Route::get('kategoris', [KategoriController::class, 'index']);
+Route::post('kategoris', [KategoriController::class, 'store']);
+Route::get('kategoris/{kategori}', [KategoriController::class, 'show']);
+Route::put('kategoris/{kategori}', [KategoriController::class, 'update']);
+Route::delete('kategoris/{kategori}', [KategoriController::class, 'destroy']);
+
+// Routes for BarangController
+Route::get('barangs', [BarangController::class, 'index']);
+Route::post('barangs', [BarangController::class, 'store']);
+Route::get('barangs/{barang}', [BarangController::class, 'show']);
+Route::put('barangs/{barang}', [BarangController::class, 'update']);
+Route::delete('barangs/{barang}', [BarangController::class, 'destroy']);
 
 /*
 |--------------------------------------------------------------------------
